@@ -1,28 +1,30 @@
-# Tested & Optimized Production-Ready Flutter App
+# Application Flutter Prête pour la Production
 
-[![CI/CD Pipeline](https://github.com/username/Tested_and_Optimized_Production_Ready_App/actions/workflows/ci.yml/badge.svg)](https://github.com/username/Tested_and_Optimized_Production_Ready_App/actions)
-[![Flutter Version](https://img.shields.io/badge/Flutter-3.x-blue.svg)](https://flutter.dev)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Pipeline CI/CD](https://github.com/username/Tested_and_Optimized_Production_Ready_App/actions/workflows/ci.yml/badge.svg)](https://github.com/username/Tested_and_Optimized_Production_Ready_App/actions)
+[![Version Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg)](https://flutter.dev)
+[![Licence](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 
-A high-performance, accessible, production-ready Flutter application built with a **Feature-First Architecture**, complete test coverage (Unit, Widget, and Integration tests), FR/EN internationalization, and GitHub Actions CI/CD.
-
----
-
-## 🚀 Features
-
-- **5 Interactive Screens**:
-  1. `HomeScreen`: Main catalog & feed with filtering, refresh, and floating action button.
-  2. `ItemDetailScreen`: Full detail view with hero transition, pricing, and favorite toggling.
-  3. `SearchScreen`: Live search filtering with item counter and clear action.
-  4. `AddItemScreen`: Production-ready form with strict input validations and semantic labels.
-  5. `SettingsScreen`: Theme switcher (Light/Dark/System) and language selector (FR/EN).
-- **Internationalization (i10n)**: Native FR + EN support using ARB files and auto-generated localization delegates.
-- **Accessibility**: Full `Semantics` coverage on interactive controls, inputs, and images.
-- **Performance**: Optimized lazy-loaded lists (`ListView.builder`), minimal rebuilds via `ListenableBuilder`, and memory-conscious image rendering.
+Une application Flutter haute performance, accessible et prête pour la production. Conçue selon une **Architecture Feature-First**, elle intègre une couverture de tests complète (tests unitaires, de widgets et d'intégration), le support de l'internationalisation FR/EN et une intégration continue avec GitHub Actions.
 
 ---
 
-## 🏗️ Architecture: Feature-First
+## 🚀 Fonctionnalités Principales
+
+- **5 Écrans Fonctionnels & Interactifs** :
+  1. **`HomeScreen`** : Catalogue principal et flux avec barres de filtres par catégorie, rafraîchissement tactile et bouton flottant d'action.
+  2. **`ItemDetailScreen`** : Vue détaillée de l'élément sélectionné avec animation Hero, description, prix et gestion des favoris.
+  3. **`SearchScreen`** : Recherche dynamique en temps réel avec réinitialisation et compteur d'éléments.
+  4. **`AddItemScreen`** : Formulaire de création d'élément avec validation stricte des champs et retours visuels.
+  5. **`SettingsScreen`** : Changement de langue dynamique (Français / Anglais) et sélecteur de thème (Clair / Sombre / Système).
+- **Internationalisation (i10n)** : Support natif Français (FR) et Anglais (EN) via des fichiers ARB et génération automatique des délégués.
+- **Accessibilité** : Balises `Semantics` sur tous les contrôles interactifs, champs de saisie, boutons et images pour la compatibilité avec les lecteurs d'écran.
+- **Performances Optimisées** : Listes à défilement paresseux (`ListView.builder`), reconstructions UI ciblées via `ListenableBuilder` et gestion efficace de la mémoire pour le rendu des images.
+
+---
+
+## 🏗️ Architecture : Feature-First
+
+Le projet est structuré par fonctionnalités (Feature-First) pour garantir une grande maintenabilité et une séparation claire des responsabilités :
 
 ```text
 lib/
@@ -30,74 +32,74 @@ lib/
 └── src/
     ├── app.dart
     ├── core/
-    │   ├── localization/      # ARB translation files & generated delegates
-    │   ├── theme/             # Material 3 light/dark theme configurations
-    │   └── widgets/           # Reusable accessible components (OptimizedImage)
+    │   ├── localization/      # Fichiers ARB de traduction & délégués générés
+    │   ├── theme/             # Configuration des thèmes Material 3 (Clair / Sombre)
+    │   └── widgets/           # Composants réutilisables et accessibles (OptimizedImage)
     └── features/
         ├── items/
-        │   ├── domain/        # Item and ItemFilter models
-        │   ├── data/          # ItemRepository & MemoryItemRepository
+        │   ├── domain/        # Modèles Item et ItemFilter
+        │   ├── data/          # Interface ItemRepository & MemoryItemRepository
         │   └── presentation/  # ItemController, HomeScreen, ItemDetailScreen, SearchScreen, AddItemScreen
         └── settings/
-            ├── domain/        # AppSettings model
-            ├── data/          # SettingsRepository
+            ├── domain/        # Modèle AppSettings
+            ├── data/          # Interface SettingsRepository
             └── presentation/  # SettingsController, SettingsScreen
 ```
 
 ---
 
-## 🧪 Test Suite
+## 🧪 Suite de Tests
 
-The project includes a comprehensive suite of **19+ tests**:
+Le projet intègre une suite automatisée de **21 tests** :
 
-- **13 Unit Tests**: Testing business logic, models (`copyWith`, JSON serialization), repositories, filters, and state controllers.
-- **6 Widget Tests**: Verifying UI rendering, localization, search interactions, form validation, and settings options.
-- **2 Integration Tests**: Testing end-to-end user navigation flows and item creation workflows.
+- **13 Tests Unitaires** : Validation de la logique métier, des modèles (`copyWith`, sérialisation JSON), des repositories, des filtres et des contrôleurs d'état.
+- **6 Tests de Widgets** : Vérification du rendu UI, de l'internationalisation, de la recherche dynamique, de la validation du formulaire et des paramètres.
+- **2 Tests d'Intégration** : Validation des parcours utilisateur de bout en bout (recherche/détail/favoris & formulaire de création d'élément).
 
-### Running Tests
+### Lancement des tests
 
 ```bash
-# Run static analysis
+# Analyse statique du code (0 warning, 0 erreur)
 flutter analyze
 
-# Run unit and widget tests
+# Exécution des tests unitaires et de widgets
 flutter test test/
 
-# Run integration tests
+# Exécution des tests d'intégration
 flutter test integration_test/app_test.dart
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## ⚙️ Installation & Démarrage
 
-1. **Clone the repository**:
+1. **Cloner le dépôt** :
    ```bash
    git clone https://github.com/username/Tested_and_Optimized_Production_Ready_App.git
    cd Tested_and_Optimized_Production_Ready_App
    ```
 
-2. **Install dependencies**:
+2. **Installer les dépendances** :
    ```bash
    flutter pub get
    ```
 
-3. **Generate localizations**:
+3. **Générer les fichiers de traduction** :
    ```bash
    flutter gen-l10n
    ```
 
-4. **Run the app**:
+4. **Lancer l'application** :
    ```bash
    flutter run
    ```
 
 ---
 
-## 📋 CI/CD
+## 📋 Intégration Continue (CI/CD)
 
-GitHub Actions workflow is configured in `.github/workflows/ci.yml`. On every `push` and `pull_request`, it automatically:
-1. Installs dependencies
-2. Generates localizations
-3. Runs `flutter analyze`
-4. Runs `flutter test test/`
+Une pipeline GitHub Actions est configurée dans `.github/workflows/ci.yml`. À chaque `push` ou `pull_request`, elle réalise automatiquement :
+1. L'installation des dépendances Flutter.
+2. La génération automatique des fichiers de localisation.
+3. L'analyse statique du code (`flutter analyze`).
+4. L'exécution de la suite de tests (`flutter test test/`).
