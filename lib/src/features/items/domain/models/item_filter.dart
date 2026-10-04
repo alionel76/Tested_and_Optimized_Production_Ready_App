@@ -1,9 +1,18 @@
+/// Critères de filtrage applicables à la liste d'articles.
 class ItemFilter {
+  /// Terme de recherche par mot-clé.
   final String searchQuery;
+
+  /// Catégorie sélectionnée (null si toutes les catégories).
   final String? category;
+
+  /// Prix maximum autorisé.
   final double? maxPrice;
+
+  /// Indique s'il faut afficher uniquement les favoris.
   final bool onlyFavorites;
 
+  /// Constructeur immuable pour [ItemFilter].
   const ItemFilter({
     this.searchQuery = '',
     this.category,
@@ -11,6 +20,7 @@ class ItemFilter {
     this.onlyFavorites = false,
   });
 
+  /// Copie le filtre en mettant à jour sélectivement ses paramètres.
   ItemFilter copyWith({
     String? searchQuery,
     String? category,
@@ -26,6 +36,7 @@ class ItemFilter {
     );
   }
 
+  /// Indique si aucun critère de filtre spécifique n'est appliqué.
   bool get isEmpty =>
       searchQuery.isEmpty &&
       category == null &&

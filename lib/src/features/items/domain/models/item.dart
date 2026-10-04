@@ -1,12 +1,27 @@
+/// Modèle de domaine représentant un article du catalogue dans l'application.
 class Item {
+  /// Identifiant unique de l'article.
   final String id;
+
+  /// Nom de l'article.
   final String name;
+
+  /// Description détaillée de l'article.
   final String description;
+
+  /// Prix unitaire de l'article.
   final double price;
+
+  /// Catégorie à laquelle appartient l'article.
   final String category;
+
+  /// URL de l'image d'illustration de l'article.
   final String imageUrl;
+
+  /// Indique si l'article est marqué comme favori par l'utilisateur.
   final bool isFavorite;
 
+  /// Constructeur constant pour créer un [Item].
   const Item({
     required this.id,
     required this.name,
@@ -17,6 +32,7 @@ class Item {
     this.isFavorite = false,
   });
 
+  /// Crée une copie de cet [Item] en modifiant uniquement les champs spécifiés.
   Item copyWith({
     String? id,
     String? name,
@@ -37,6 +53,7 @@ class Item {
     );
   }
 
+  /// Sérialise cet [Item] sous forme de Map JSON.
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -49,6 +66,7 @@ class Item {
     };
   }
 
+  /// Désérialise un objet JSON pour instancier un [Item].
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
       id: json['id'] as String,

@@ -1,18 +1,32 @@
 import '../../domain/models/item.dart';
 import '../../domain/models/item_filter.dart';
 
+/// Interface abstraite pour la gestion de la source de données des articles.
 abstract class ItemRepository {
+  /// Récupère la liste des articles correspondant aux critères de [filter].
   Future<List<Item>> getItems({ItemFilter? filter});
+
+  /// Récupère un article spécifique à partir de son [id].
   Future<Item?> getItemById(String id);
+
+  /// Ajoute un nouvel [item] dans le repository.
   Future<void> addItem(Item item);
+
+  /// Alterne l'état favori de l'article spécifié par [id].
   Future<void> toggleFavorite(String id);
+
+  /// Récupère la liste distincte des catégories d'articles.
   Future<List<String>> getCategories();
 }
 
+/// Implémentation en mémoire de [ItemRepository] pour le stockage local et les tests.
 class MemoryItemRepository implements ItemRepository {
   final List<Item> _items;
+
+  /// Délai de simulation d'accès réseau / disque.
   final Duration delay;
 
+  /// Initialise le repository avec des données initiales ou un jeu de seed par défaut.
   MemoryItemRepository({
     List<Item>? initialItems,
     this.delay = Duration.zero,
@@ -73,72 +87,100 @@ class MemoryItemRepository implements ItemRepository {
 
   @override
   Future<List<Item>> getItems({ItemFilter? filter}) async {
-    if (delay > Duration.zero) {
-      await Future.delayed(delay);
+    try {
+      if (delay > Duration.zero) {
+        await Future.delayed(delay);
+      }
+      var result = List<Item>.from(_items);
+
+      if (filter != null) {
+        if (filter.searchQuery.isNotEmpty) {
+          final query = filter.searchQuery.toLowerCase();
+          result = result
+              .where((item) =>
+                  item.name.toLowerCase().contains(query) ||
+                  item.description.toLowerCase().contains(query))
+              .toList();
+        }
+
+        if (filter.category != null && filter.category!.isNotEmpty) {
+          result = result
+              .where((item) => item.category == filter.category)
+              .toList();
+        }
+
+        if (filter.maxPrice != null) {
+          result = result
+              .where((item) => item.price <= filter.maxPrice!)
+              .toList();
+        }
+
+        if (filter.onlyFavorites) {
+          result = result.where((item) => item.isFavorite).toList();
+        }
+      }
+
+      return result;
+    } catch (e) {
+      throw Exception('Erreur lors de la récupération des articles: $e');
     }
-    var result = List<Item>.from(_items);
-
-    if (filter != null) {
-      if (filter.searchQuery.isNotEmpty) {
-        final query = filter.searchQuery.toLowerCase();
-        result = result
-            .where((item) =>
-                item.name.toLowerCase().contains(query) ||
-                item.description.toLowerCase().contains(query))
-            .toList();
-      }
-
-      if (filter.category != null && filter.category!.isNotEmpty) {
-        result = result
-            .where((item) => item.category == filter.category)
-            .toList();
-      }
-
-      if (filter.maxPrice != null) {
-        result = result
-            .where((item) => item.price <= filter.maxPrice!)
-            .toList();
-      }
-
-      if (filter.onlyFavorites) {
-        result = result.where((item) => item.isFavorite).toList();
-      }
-    }
-
-    return result;
   }
 
   @override
   Future<Item?> getItemById(String id) async {
-    if (delay > Duration.zero) {
-      await Future.delayed(delay);
-    }
     try {
-      return _items.firstWhere((item) => item.id == id);
-    } catch (_) {
+      if (delay > Duration.zero) {
+        await Future.delayed(delay);
+      }
+      return _items.firstWhere(
+        (item) => item.id == id,
+        orElse: () => throw Exception('Article non trouvé'),
+      );
+    } catch (e) {
       return null;
     }
   }
 
   @override
   Future<void> addItem(Item item) async {
-    _items.add(item);
+    try {
+      if (delay > Duration.zero) {
+        await Future.delayed(delay);
+      }
+      _items.add(item);
+    } catch (e) {
+      throw Exception('Erreur lors de l\'ajout de l\'article: $e');
+    }
   }
 
   @override
   Future<void> toggleFavorite(String id) async {
-    final index = _items.indexWhere((item) => item.id == id);
-    if (index != -1) {
-      _items[index] = _items[index].copyWith(
-        isFavorite: !_items[index].isFavorite,
-      );
+    try {
+      if (delay > Duration.zero) {
+        await Future.delayed(delay);
+      }
+      final index = _items.indexWhere((item) => item.id == id);
+      if (index != -1) {
+        _items[index] = _items[index].copyWith(
+          isFavorite: !_items[index].isFavorite,
+        );
+      }
+    } catch (e) {
+      throw Exception('Erreur lors de la modification des favoris: $e');
     }
   }
 
   @override
   Future<List<String>> getCategories() async {
-    final categories = _items.map((e) => e.category).toSet().toList();
-    categories.sort();
-    return categories;
+    try {
+      if (delay > Duration.zero) {
+        await Future.delayed(delay);
+      }
+      final categories = _items.map((e) => e.category).toSet().toList();
+      categories.sort();
+      return categories;
+    } catch (e) {
+      return [];
+    }
   }
 }
