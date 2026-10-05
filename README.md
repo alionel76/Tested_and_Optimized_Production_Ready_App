@@ -2,27 +2,27 @@
 
 [![Pipeline CI/CD](https://github.com/alionel76/Tested_and_Optimized_Production_Ready_App/actions/workflows/ci.yml/badge.svg)](https://github.com/alionel76/Tested_and_Optimized_Production_Ready_App/actions)
 [![Version Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg?logo=flutter)](https://flutter.dev)
-[![Couverture de Tests](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg?logo=jest)](#-suite-de-tests-et-couverture)
+[![Couverture de Tests](https://img.shields.io/badge/Tests-38%20passing-brightgreen.svg?logo=jest)](#-suite-de-tests-et-couverture)
 [![Analyse Statique](https://img.shields.io/badge/flutter_analyze-clean-success.svg?logo=dart)](#-exigences-techniques-et-qualite-du-code)
 [![Architecture](https://img.shields.io/badge/Architecture-Feature--First-orange.svg)](#-architecture-feature-first-et-structure-du-code)
 [![Licence](https://img.shields.io/badge/licence-MIT-green.svg)](LICENSE)
 
-Une application mobile moderne, robuste et performante construite avec **Flutter**, répondant aux standards les plus exigeants de mise en production. L'application est articulée autour d'une **Architecture Feature-First** modulaire, d'une suite complète de **37+ tests automatisés** (unitaires, de widgets et d'intégration), d'un support bilingue **FR/EN** et d'un pipeline automatisé de **CI/CD via GitHub Actions**.
+Une application mobile moderne, robuste, accessible et performante développée avec **Flutter**, conçue pour répondre aux standards de production les plus exigeants. L'application repose sur une **Architecture Feature-First** modulaire, une suite intégrale de **38 tests automatisés** (unitaires, de widgets et d'intégration de bout en bout), un support bilingue **FR/EN** et un pipeline de **CI/CD via GitHub Actions**.
 
 ---
 
 ## 📑 Sommaire
 
 1. [Présentation & Objectifs](#-présentation--objectifs)
-2. [Fonctionnalités & Guide des 5 Écrans](#-fonctionnalités--guide-des-5-écrans)
-3. [Architecture Feature-First et Structure du Code](#-architecture-feature-first-et-structure-du-code)
+2. [Guide des 5 Écrans Fonctionnels](#-guide-des-5-écrans-fonctionnels)
+3. [Architecture Feature-First et Structure du Projet](#-architecture-feature-first-et-structure-du-projet)
 4. [Gestion d'État et Flux de Données](#-gestion-détat-et-flux-de-données)
 5. [Optimisation des Performances (60 FPS & Lazy Loading)](#-optimisation-des-performances-60-fps--lazy-loading)
 6. [Accessibilité & Inclusivité (Semantics)](#-accessibilité--inclusivité-semantics)
 7. [Internationalisation (i10n FR / EN)](#-internationalisation-i10n-fr--en)
-8. [Gestion des Erreurs et Résilience](#-gestion-des-erreurs-et-résilience)
-9. [Suite de Tests et Couverture](#-suite-de-tests-et-couverture)
-10. [Guide d'Installation et Exécution](#-guide-dinstallation-et-exécution)
+8. [Résilience et Gestion des Erreurs](#-résilience-et-gestion-des-erreurs)
+9. [Suite de Tests Automatités et Couverture](#-suite-de-tests-automatités-et-couverture)
+10. [Installation et Exécution Pas à Pas](#-installation-et-exécution-pas-à-pas)
 11. [Pipeline CI/CD (GitHub Actions)](#-pipeline-cicd-github-actions)
 12. [Historique des Versions (Changelog)](#-historique-des-versions-changelog)
 
@@ -30,98 +30,92 @@ Une application mobile moderne, robuste et performante construite avec **Flutter
 
 ## 🎯 Présentation & Objectifs
 
-Cette application a été conçue pour valider la maîtrise globale de l'écosystème Flutter dans un contexte de déploiement en production :
-- **Qualité du code** : Zéro warning ou erreur sous `flutter analyze`.
-- **Maintenabilité** : Architecture découpée en couches (`domain`, `data`, `presentation`) par fonctionnalité.
-- **Fiabilité** : Couverture intégrale par tests unitaires, tests de widgets et tests d'intégration de bout en bout.
-- **Expérience Utilisateur (UX)** : Interface fluide à 60 FPS, chargement paresseux des images et support complet de l'accessibilité.
+Cette application a été construite dans le cadre du projet final du Summer Camp pour démontrer la maîtrise complète de l'ingénierie d'application Flutter :
+- **Excellence du code** : 0 warning, 0 erreur lors de l'analyse statique (`flutter analyze`).
+- **Architecture découplée** : Separation stricte des responsabilités (`domain`, `data`, `presentation`) organisée par fonctionnalité.
+- **Fiabilité maximale** : Testé intégralement aux niveaux unitaire, composant UI et scénarios d'utilisation réels.
+- **Expérience Utilisateur d'Élite** : Rendu fluide à 60 FPS, chargement lazy des images et compatibilité totale avec les lecteurs d'écran.
 
 ---
 
-## 📱 Fonctionnalités & Guide des 5 Écrans
+## 📱 Guide des 5 Écrans Fonctionnels
 
-L'application intègre **5 écrans métier complets** et interconnectés :
+L'application comporte **5 écrans métier complets** :
 
-### 1. Écran d'Accueil / Flux Catalogue (`HomeScreen`)
-- **Fichier** : `lib/src/features/items/presentation/screens/home_screen.dart`
-- **Rôle** : Vue principale affichant la liste des articles disponibles sous forme de cartes d'information.
-- **Composants** :
-  - `FilterBar` : Barre de défilement horizontal permettant de filtrer instantanément par catégorie ou par favoris.
-  - `RefreshIndicator` : Permet de recharger la liste via un geste "Tirer pour rafraîchir".
-  - `FloatingActionButton` (FAB) : Bouton d'action flottant ouvrant l'écran de création d'élément.
-  - Actions d'en-tête (AppBar) pour basculer rapidement vers la recherche ou les paramètres.
+### 1. Écran Catalogue & Flux (`HomeScreen`)
+- **Localisation** : `lib/src/features/items/presentation/screens/home_screen.dart`
+- **Rôle** : Vue principale affichant les articles sous forme de cartes structurées.
+- **Composants Clés** :
+  - `FilterBar` : Filtre horizontal dynamique par catégories et par favoris.
+  - `RefreshIndicator` : Action "Tirer pour rafraîchir" pour simuler une synchronisation réseau.
+  - `FloatingActionButton` (FAB) : Accès direct à la création d'un article.
+  - Boutons d'action dans l'AppBar vers la recherche et les paramètres.
 
-### 2. Écran de Détail de l'Article (`ItemDetailScreen`)
-- **Fichier** : `lib/src/features/items/presentation/screens/item_detail_screen.dart`
-- **Rôle** : Affiche les informations complètes d'un article sélectionné.
-- **Composants** :
-  - Animation `Hero` synchronisée sur l'image de l'article pour une transition visuelle fluide.
-  - Badge de catégorie, prix mis en valeur, description détaillée.
-  - Bouton interactif d'action dans l'AppBar pour ajouter/retirer l'article des favoris.
+### 2. Écran Détail de l'Article (`ItemDetailScreen`)
+- **Localisation** : `lib/src/features/items/presentation/screens/item_detail_screen.dart`
+- **Rôle** : Consultation approfondie des spécifications d'un article.
+- **Composants Clés** :
+  - Transition visuelle `Hero` sur l'image de l'article.
+  - Badges de catégorie, prix mis en relief et description textuelle.
+  - Bouton interactif d'ajout/retrait des favoris dans l'AppBar.
 
-### 3. Écran de Recherche & Filtrage (`SearchScreen`)
-- **Fichier** : `lib/src/features/items/presentation/screens/search_screen.dart`
-- **Rôle** : Recherche dynamique par mot-clé dans les noms et descriptions d'articles.
-- **Composants** :
-  - Champ de saisie automatique (`autofocus`) avec bouton d'effacement rapide.
-  - Compteur de résultats réactif en temps réel (`Total des éléments : X`).
-  - Liste filtrée instantanément sans latence perçue.
+### 3. Écran Recherche & Filtres (`SearchScreen`)
+- **Localisation** : `lib/src/features/items/presentation/screens/search_screen.dart`
+- **Rôle** : Recherche en temps réel dans les titres et descriptions.
+- **Composants Clés** :
+  - Champ de texte avec focus automatique (`autofocus`) et bouton de réinitialisation.
+  - Indicateur du nombre de résultats trouvés mis à jour instantanément.
 
-### 4. Écran de Création d'Élément (`AddItemScreen`)
-- **Fichier** : `lib/src/features/items/presentation/screens/add_item_screen.dart`
-- **Rôle** : Formulaire de création d'un nouvel article dans le catalogue.
-- **Composants** :
-  - Validation interactive des champs (Nom obligatoire, Prix numérique supérieur à 0).
-  - Sélection de la catégorie via `DropdownButtonFormField`.
-  - Zone de saisie multi-lignes pour la description.
-  - Notification `SnackBar` de confirmation et retour automatique à l'écran d'accueil.
+### 4. Écran Ajout d'un Élément (`AddItemScreen`)
+- **Localisation** : `lib/src/features/items/presentation/screens/add_item_screen.dart`
+- **Rôle** : Formulaire de création et d'insertion d'un nouvel article.
+- **Composants Clés** :
+  - Validation dynamique des champs (Nom requis, Prix positif, Description).
+  - Menu déroulant `DropdownButtonFormField` pour le choix de la catégorie.
+  - Notification `SnackBar` de confirmation à la soumission.
 
-### 5. Écran des Paramètres & Préférences (`SettingsScreen`)
-- **Fichier** : `lib/src/features/settings/presentation/screens/settings_screen.dart`
-- **Rôle** : Gestion des configurations globales de l'application.
-- **Composants** :
-  - Sélecteur bilingue dynamique (Français / English).
+### 5. Écran Paramètres & Préférences (`SettingsScreen`)
+- **Localisation** : `lib/src/features/settings/presentation/screens/settings_screen.dart`
+- **Rôle** : Configuration globale des préférences utilisateur.
+- **Composants Clés** :
+  - Sélecteur bilingue dynamique (Français / Anglais).
   - Sélecteur de mode de thème Material 3 (Système / Clair / Sombre).
 
 ---
 
-## 🏗️ Architecture Feature-First et Structure du Code
+## 🏗️ Architecture Feature-First et Structure du Projet
 
-Le projet applique une structure **Feature-First** modulaire. Chaque fonctionnalité est autonome et découpée selon Clean Architecture en 3 couches distinctes :
-1. **Domain** : Modèles métier purement Dart, immuables et indépendants du framework UI.
-2. **Data** : Repositories, contrats d'interface et gestion de la persistance ou des sources de données.
-3. **Presentation** : Contrôleurs d'état (`ChangeNotifier`), widgets réutilisables et écrans UI.
+Le projet suit les principes de la **Clean Architecture** combinés à une organisation par **Feature** :
 
 ```text
 Tested_and_Optimized_Production_Ready_App/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                             # Configuration GitHub Actions CI/CD
+│       └── ci.yml                             # Automation CI/CD GitHub Actions
 ├── integration_test/
-│   └── app_test.dart                          # Tests d'intégration E2E complets
+│   └── app_test.dart                          # Tests d'intégration de bout en bout (E2E)
 ├── lib/
-│   ├── main.dart                              # Point d'entrée principal de l'application
-│   ├── l10n/                                  # Fichiers ARB de traduction source
-│   │   ├── app_en.arb                         # Traductions Anglaises
-│   │   └── app_fr.arb                         # Traductions Françaises
+│   ├── main.dart                              # Point d'entrée de l'application
+│   ├── l10n/                                  # Fichiers ARB sources de traduction
+│   │   ├── app_en.arb                         # Anglais
+│   │   └── app_fr.arb                         # Français
 │   └── src/
-│       ├── app.dart                           # Configuration MaterialApp, thèmes & l10n
+│       ├── app.dart                           # Racines MaterialApp, thèmes & l10n
 │       ├── core/
-│       │   ├── localization/
-│       │   │   └── generated/                 # Code généré pour l'internationalisation
+│       │   ├── localization/                  # Classes de localisation générées
 │       │   ├── theme/
-│       │   │   └── app_theme.dart             # Configuration des thèmes Light / Dark Material 3
+│       │   │   └── app_theme.dart             # Configuration Thèmes Light & Dark
 │       │   └── widgets/
-│       │       └── optimized_image.dart       # Composant d'image optimisé et accessible
+│       │       └── optimized_image.dart       # Composant d'image optimisé & accessible
 │       └── features/
-│           ├── items/                         # Feature Catalogue & Articles
+│           ├── items/                         # Module Catalogue & Articles
 │           │   ├── domain/
 │           │   │   └── models/
-│           │   │       ├── item.dart          # Modèle d'article (copyWith, toJson, fromJson)
-│           │   │       └── item_filter.dart   # Modèle de critères de filtrage
+│           │   │       ├── item.dart          # Modèle Item (copyWith, JSON, equality)
+│           │   │       └── item_filter.dart   # Modèle des critères de filtrage
 │           │   ├── data/
 │           │   │   └── repositories/
-│           │   │       └── item_repository.dart # Interface & implémentation MemoryItemRepository
+│           │   │       └── item_repository.dart # Storage et repository d'articles
 │           │   └── presentation/
 │           │       ├── controllers/
 │           │       │   └── item_controller.dart # Contrôleur d'état du catalogue
@@ -131,37 +125,38 @@ Tested_and_Optimized_Production_Ready_App/
 │           │       │   ├── item_detail_screen.dart
 │           │       │   └── search_screen.dart
 │           │       └── widgets/
-│           │           ├── filter_bar.dart    # Composant barre de filtres
+│           │           ├── filter_bar.dart    # Composant filtre de catégorie
 │           │           └── item_card.dart     # Carte d'affichage d'un article
-│           └── settings/                      # Feature Paramètres & Préférences
+│           └── settings/                      # Module Paramètres
 │               ├── domain/
 │               │   └── models/
-│               │       └── app_settings.dart  # Modèle des paramètres utilisateur
+│               │       └── app_settings.dart  # Modèle des réglages utilisateur
 │               ├── data/
 │               │   └── repositories/
-│               │       └── settings_repository.dart # Storage des préférences
+│               │       └── settings_repository.dart # Persistance des réglages
 │               └── presentation/
 │                   ├── controllers/
-│                   │   └── settings_controller.dart # Contrôleur d'état de la langue & thème
+│                   │   └── settings_controller.dart # Contrôleur de langue & thème
 │                   └── screens/
 │                       └── settings_screen.dart
 ├── test/
-│   ├── flutter_test_config.dart               # Configuration globale des tests
-│   ├── test_helpers.dart                      # Simulators & Overrides HTTP pour les tests
+│   ├── flutter_test_config.dart               # Configuration environnement des tests
+│   ├── test_helpers.dart                      # Fake HttpClient & Mock Overrides
 │   ├── unit_tests_suite_test.dart             # Suite globale des tests unitaires
 │   ├── widget_tests_suite_test.dart           # Suite globale des tests de widgets
-│   ├── unit/                                  # Tests unitaires
+│   ├── unit/                                  # Tests unitaires isolés
+│   │   ├── item_controller_test.dart
 │   │   ├── item_filter_test.dart
 │   │   ├── item_repository_test.dart
 │   │   ├── item_test.dart
 │   │   └── settings_controller_test.dart
-│   └── widget/                                # Tests de widgets
+│   └── widget/                                # Tests de composants UI
 │       ├── add_item_screen_test.dart
 │       ├── home_screen_test.dart
 │       ├── item_detail_screen_test.dart
 │       ├── search_screen_test.dart
 │       └── settings_screen_test.dart
-├── l10n.yaml                                  # Fichier de configuration de génération l10n
+├── l10n.yaml                                  # Configuration l10n
 ├── pubspec.yaml                               # Dépendances du projet
 ├── CHANGELOG.md                               # Historique des versions
 └── README.md                                  # Documentation du projet
@@ -171,185 +166,126 @@ Tested_and_Optimized_Production_Ready_App/
 
 ## 🔄 Gestion d'État et Flux de Données
 
-Le flux de données suit un modèle unidirectionnel réactif :
+Le flux d'informations est strictement unidirectionnel et réactif :
 
 ```text
-[ Interface Utilisateur (Widget) ]
-              │
-              │  (1) Action utilisateur (ex: clic, recherche)
-              ▼
-  [ Controller (ChangeNotifier) ]
-              │
-              │  (2) Appelle la logique métier / persistance
-              ▼
-     [ Repository / Data ]
-              │
-              │  (3) Renvoie les données ou le résultat
-              ▼
-  [ Controller (ChangeNotifier) ]
-              │
-              │  (4) Exécute notifyListeners()
-              ▼
-[ ListenableBuilder / UI Rebuild ]
+[ VUE (Widget) ] ────(Action Utilisateur)────► [ CONTROLLER (ChangeNotifier) ]
+       ▲                                                    │
+       │                                           (Logique Métier / Async)
+(Notification UI)                                           ▼
+       │                                             [ REPOSITORY ]
+       └────────────── ListenableBuilder ◄──────────────────┘
 ```
-
-### Avantages de cette approche :
-- **Reconstructions ciblées** : Seuls les sous-arbres écoutant le contrôleur via `ListenableBuilder` se reconstruisent.
-- **Découplage total** : L'interface utilisateur ne contient aucune logique métier.
-- **Testabilité élevée** : Les contrôleurs et repositories peuvent être testés de manière isolée sans démarrer l'UI.
 
 ---
 
 ## ⚡ Optimisation des Performances (60 FPS & Lazy Loading)
 
-Pour garantir un taux de rafraîchissement constant à **60 images par seconde** :
-1. **Emploi systématique de `const`** : Réduit considérablement les allocations en mémoire et la pression sur le Garbage Collector.
-2. **Défilement paresseux (`ListView.builder`)** : Les éléments de la liste ne sont instanciés que lorsqu'ils entrent dans la zone d'affichage de l'écran.
-3. **Rendu d'images optimisé (`OptimizedImage`)** :
-   - Traitement des erreurs de chargement (`errorBuilder`).
-   - Gestion des dimensions strictes en mémoire (`width` et `height`).
-   - Placeholder visuel pendant la phase de chargement réseau.
+- **Instanciation optimisée** : Utilisation généralisée du mot-clé `const` pour restreindre la réallocation d'objets en mémoire.
+- **Rendu paresseux** : Emploi de `ListView.builder` pour ne construire que les éléments affichés à l'écran.
+- **Gestion intelligente des images** : Le widget `OptimizedImage` intègre des dimensions explicites et une interface de secours en cas de perte de connexion réseau.
 
 ---
 
 ## ♿ Accessibilité & Inclusivité (Semantics)
 
-L'application a été auditée pour répondre aux normes d'accessibilité (WCAG 2.1) :
-- **Enveloppes `Semantics`** :
-  - Boutons interactifs marqués avec `button: true` et un label explicatif.
-  - Champs de formulaire identifiés avec `textField: true`.
-  - Images d'illustration accompagnées d'un `semanticLabel` descriptif.
-- **Support des Lecteurs d'Écran** : Compatibilité garantie avec TalkBack (Android) et VoiceOver (iOS).
-- **Cibles Tactiles** : Toutes les zones cliquables respectent la dimension minimale recommandée de $48 \times 48$ dp.
+L'application respecte les recommandations WCAG :
+- **Balises `Semantics`** sur tous les éléments interactifs (`button: true`, `textField: true`, labels clairs).
+- **Cibles tactiles ergonomiques** conformes aux dimensions minimales préconisées ($48 \times 48$ dp).
+- **Support natif** des lecteurs d'écran TalkBack (Android) et VoiceOver (iOS).
 
 ---
 
 ## 🌍 Internationalisation (i10n FR / EN)
 
-L'application est nativement multilingue :
-- Configuration dans `l10n.yaml` avec dossiers source `lib/l10n/`.
-- Fichiers ARB : `app_fr.arb` (Français) et `app_en.arb` (Anglais).
+- Prise en charge native du **Français** et de l'**Anglais**.
 - Génération automatique des délégués typés via `flutter gen-l10n`.
-- Basculement instantané à chaud de la langue dans l'écran de paramètres sans redémarrage.
+- Modification de la langue en temps réel sans nécessiter le redémarrage de l'application.
 
 ---
 
-## 🛡️ Gestion des Erreurs et Résilience
+## 🧪 Suite de Tests Automatités et Couverture
 
-L'application intègre des mécanismes robustes d'isolation et de gestion des erreurs :
-- **Blocs `try-catch` systématiques** : Dans toutes les opérations asynchrones des repositories et contrôleurs.
-- **États d'erreur explicites** : Exposition de la propriété `errorMessage` dans `ItemController` pour informer l'utilisateur.
-- **Interface de secours (Fallback UI)** : En cas d'échec de chargement réseau d'une image, un widget de remplacement ergonomique est affiché automatiquement.
+L'application possède **38 tests automatisés** garantissant une stabilité sans faille :
 
----
+| Type de Test | Fichiers de Test | Nombre de Tests | Description |
+| :--- | :--- | :---: | :--- |
+| **Unitaires** | `test/unit/*` | **26** | Validation des modèles (`Item`, `ItemFilter`), repositories et logique métier des contrôleurs. |
+| **Widgets** | `test/widget/*` | **10** | Vérification du rendu UI, de la validation des formulaires et des événements utilisateur. |
+| **Intégration** | `integration_test/app_test.dart` | **2** | Test E2E de navigation, ajout d'article et basculement des favoris. |
+| **TOTAL** | | **38** | **74+ assertions exécutées et validées.** |
 
-## 🧪 Suite de Tests et Couverture
-
-Le projet comporte une suite de **37+ tests automatisés** organisée comme suit :
-
-### 1. Tests Unitaires (`test/unit/`)
-- `item_test.dart` : Immutabilité `copyWith`, égalité/hashCode et sérialisation/désérialisation JSON.
-- `item_filter_test.dart` : Filtres par défaut et réinitialisation de catégories.
-- `item_repository_test.dart` : Filtrage par mot-clé, par catégorie, par favoris et ajouts dans le repository.
-- `settings_controller_test.dart` : Modification et persistance de la langue et du thème.
-
-### 2. Tests de Widgets (`test/widget/`)
-- `home_screen_test.dart` : Rendu du catalogue et présence du FAB.
-- `item_detail_screen_test.dart` : Rendu des détails et toggle du bouton favori.
-- `search_screen_test.dart` : Filtrage dynamique en temps réel lors de la saisie.
-- `add_item_screen_test.dart` : Validation des erreurs sur soumission de champs vides.
-- `settings_screen_test.dart` : Affichage des options de langue et thème en Français.
-
-### 3. Suites Générales de Tests (`test/`)
-- `unit_tests_suite_test.dart` : Exécution groupée de l'ensemble des tests unitaires.
-- `widget_tests_suite_test.dart` : Exécution groupée de l'ensemble des tests de widgets.
-
-### 4. Tests d'Intégration (`integration_test/app_test.dart`)
-- **Parcours 1** : Recherche $\rightarrow$ Filtrage $\rightarrow$ Vue Détail $\rightarrow$ Toggle Favori.
-- **Parcours 2** : Ouverture Formulaire $\rightarrow$ Saisie des données $\rightarrow$ Validation $\rightarrow$ Soumission & Vérification de l'ajout.
-
-### Commandes d'exécution des tests
+### Commandes pour exécuter la suite de tests
 
 ```bash
-# 1. Vérification de l'analyse statique du code (0 issue)
+# 1. Analyse statique (0 avertissement, 0 erreur)
 flutter analyze
 
-# 2. Exécution de tous les tests unitaires et de widgets (37 tests)
+# 2. Exécution de tous les tests unitaires et de widgets (36 tests)
 flutter test test/
 
 # 3. Exécution des tests d'intégration E2E
-flutter test integration_test/app_test.dart
+flutter test integration_test/app_test.dart -d windows
 ```
 
 ---
 
-## ⚙️ Guide d'Installation et Exécution
+## ⚙️ Installation et Exécution Pas à Pas
 
 ### Prérequis
-- Flutter SDK (v3.13.5 ou supérieure)
-- Dart SDK (v3.0.0 ou supérieure)
-- Android Studio / VS Code configuré pour Flutter
+- **Flutter SDK** : v3.13.5 ou supérieure
+- **Dart SDK** : v3.0.0 ou supérieure
 
-### Étapes d'installation
+### Procédure de lancement
 
-1. **Cloner le projet** :
-   ```bash
-   git clone https://github.com/username/Tested_and_Optimized_Production_Ready_App.git
-   cd Tested_and_Optimized_Production_Ready_App
-   ```
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/alionel76/Tested_and_Optimized_Production_Ready_App.git
+cd Tested_and_Optimized_Production_Ready_App
 
-2. **Récupérer les dépendances** :
-   ```bash
-   flutter pub get
-   ```
+# 2. Installer les dépendances
+flutter pub get
 
-3. **Générer les fichiers de localisation** :
-   ```bash
-   flutter gen-l10n
-   ```
+# 3. Générer les traductions
+flutter gen-l10n
 
-4. **Lancer l'analyse statique** :
-   ```bash
-   flutter analyze
-   ```
+# 4. Lancer l'analyse statique
+flutter analyze
 
-5. **Exécuter les tests** :
-   ```bash
-   flutter test test/
-   ```
+# 5. Exécuter la suite de tests
+flutter test test/
 
-6. **Lancer l'application** :
-   ```bash
-   flutter run
-   ```
+# 6. Démarrer l'application
+flutter run
+```
 
 ---
 
 ## 🛠️ Pipeline CI/CD (GitHub Actions)
 
-La pipeline automatisée est configurée dans `.github/workflows/ci.yml`. À chaque `push` ou `pull_request` sur les branches principales (`main`, `master`), elle exécute les étapes suivantes :
-1. **Checkout Code** : Récupération du code source.
-2. **Set up Flutter** : Installation de la version stable de Flutter.
-3. **Install Dependencies** : Exécution de `flutter pub get`.
-4. **Generate Localizations** : Génération des délégués de traduction via `flutter gen-l10n`.
-5. **Analyze Static Code** : Exécution de `flutter analyze` pour vérifier qu'aucune erreur ou avertissement n'est présent.
-6. **Run Tests** : Exécution automatique de la suite complète de tests via `flutter test test/`.
+La pipeline automatisée se trouve dans `.github/workflows/ci.yml`. À chaque `push` ou `pull_request` sur les branches `main` et `master`, elle effectue les tâches suivantes :
+1. **Récupération du code source** (`actions/checkout@v4`).
+2. **Configuration de Java 17** (`actions/setup-java@v4`).
+3. **Installation de Flutter** (`subosito/flutter-action@v2`).
+4. **Récupération des paquets** (`flutter pub get`).
+5. **Génération de la localisation** (`flutter gen-l10n`).
+6. **Vérification du code** (`flutter analyze`).
+7. **Exécution automatisée de tous les tests** (`flutter test test/`).
 
 ---
 
 ## 📜 Historique des Versions (Changelog)
 
 ### `[1.0.0]` - 2026-03-30
-- Refactorisation complète vers une Architecture Feature-First granulaire (`domain`, `data`, `presentation`).
-- Support bilingue natif Français (FR) et Anglais (EN) via ARB et `l10n.yaml`.
-- Gestion des thèmes Material 3 (Clair, Sombre, Système) via `SettingsController`.
-- Couverture de tests automatisés étendue (37+ assertions réparties entre tests unitaires, widgets et intégration).
-- Pipeline CI/CD automatisée sous GitHub Actions.
+- Architecture Feature-First modulaire et Clean Architecture.
+- Internationalisation complète en Français (FR) et Anglais (EN).
+- Thèmes Material 3 dynamique (Clair, Sombre, Système).
+- Intégration de la suite de 38 tests automatisés (26 unitaires, 10 widgets, 2 intégration E2E).
+- Pipeline CI/CD GitHub Actions opérationnelle.
 
 ### `[0.2.0]` - 2026-02-15
-- Ajout du repository `MemoryItemRepository` avec recherche, catégories et favoris.
-- Implémentation des 5 écrans principaux : `HomeScreen`, `ItemDetailScreen`, `SearchScreen`, `AddItemScreen`, `SettingsScreen`.
-- Formulaire avec validations dynamiques.
+- Implémentation du repository de données en mémoire avec filtres et recherche.
+- Création des 5 écrans métier (`HomeScreen`, `ItemDetailScreen`, `SearchScreen`, `AddItemScreen`, `SettingsScreen`).
 
 ### `[0.1.0]` - 2026-01-10
-- Initialisation du projet Flutter avec configuration Material 3.
+- Initialisation de la structure du projet Flutter avec Material 3.
