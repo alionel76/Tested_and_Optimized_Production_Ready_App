@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/settings/data/repositories/settings_repository.dart';
+import 'package:tested_and_optimized_production_ready_app/src/features/settings/domain/models/app_settings.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/settings/presentation/controllers/settings_controller.dart';
 
 void main() {
@@ -9,30 +10,55 @@ void main() {
     late SettingsController controller;
 
     setUp(() {
-      repository = MemorySettingsRepository();
+      repository = MemorySettingsRepository(
+        initialSettings: const AppSettings(
+          locale: Locale('fr'),
+          themeMode: ThemeMode.system,
+        ),
+      );
       controller = SettingsController(repository: repository);
     });
 
-    test('loadSettings initializes settings from repository', () async {
+    test('loadSettings initializes settings properly', () async {
+      expect(controller.isInitialized, false);
+
       await controller.loadSettings();
-      expect(controller.isInitialized, isTrue);
+
+      expect(controller.isInitialized, true);
       expect(controller.locale, const Locale('fr'));
+      expect(controller.themeMode, ThemeMode.system);
     });
 
-    test('updateLocale changes locale and saves settings', () async {
+    test('updateLocale updates settings and persists changes', () async {
       await controller.loadSettings();
+
+      bool notified = false;
+      controller.addListener(() {
+        notified = true;
+      });
+
       await controller.updateLocale(const Locale('en'));
 
       expect(controller.locale, const Locale('en'));
+      expect(notified, true);
+
       final savedSettings = await repository.loadSettings();
       expect(savedSettings.locale, const Locale('en'));
     });
 
-    test('updateThemeMode changes themeMode and saves settings', () async {
+    test('updateThemeMode updates settings and persists changes', () async {
       await controller.loadSettings();
+
+      bool notified = false;
+      controller.addListener(() {
+        notified = true;
+      });
+
       await controller.updateThemeMode(ThemeMode.dark);
 
       expect(controller.themeMode, ThemeMode.dark);
+      expect(notified, true);
+
       final savedSettings = await repository.loadSettings();
       expect(savedSettings.themeMode, ThemeMode.dark);
     });

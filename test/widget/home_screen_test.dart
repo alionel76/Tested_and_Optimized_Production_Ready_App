@@ -1,39 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tested_and_optimized_production_ready_app/src/core/localization/generated/app_localizations.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/data/repositories/item_repository.dart';
+import 'package:tested_and_optimized_production_ready_app/src/features/items/domain/models/item.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/presentation/controllers/item_controller.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/presentation/screens/home_screen.dart';
 
+import '../test_helpers.dart';
+
 void main() {
-  testWidgets('HomeScreen renders catalog items and floating action button',
-      (WidgetTester tester) async {
-    final repository = MemoryItemRepository();
-    final controller = ItemController(repository: repository);
-    await controller.loadItems();
+  group('HomeScreen Widget Tests', () {
+    late MemoryItemRepository repository;
+    late ItemController itemController;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('fr'),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+    setUp(() {
+      repository = MemoryItemRepository(
+        initialItems: [
+          const Item(
+            id: '1',
+            name: 'Flutter Cookbook',
+            description: 'Learn Flutter',
+            price: 29.99,
+            category: 'Livres',
+            imageUrl: 'https://example.com/flutter.png',
+          ),
+          const Item(
+            id: '2',
+            name: 'Casque Sans Fil',
+            description: 'Audio HD',
+            price: 99.99,
+            category: 'Électronique',
+            imageUrl: 'https://example.com/casque.png',
+          ),
         ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: HomeScreen(
-          itemController: controller,
-          settingsWidget: const SizedBox(),
+      );
+      itemController = ItemController(repository: repository);
+    });
+
+    testWidgets('HomeScreen displays app bar title and list items', (WidgetTester tester) async {
+      await itemController.loadItems();
+
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: HomeScreen(
+            itemController: itemController,
+            settingsWidget: const Text('Settings View'),
+          ),
         ),
-      ),
-    );
+      );
 
-    await tester.pump();
+      await tester.pumpAndSettle();
 
-    expect(find.text('Catalogue & Flux'), findsOneWidget);
-    expect(find.byType(FloatingActionButton), findsOneWidget);
-    expect(find.text('Flutter Cookbook'), findsOneWidget);
+      expect(find.text('Catalogue & Flux'), findsOneWidget);
+      expect(find.text('Flutter Cookbook'), findsOneWidget);
+      expect(find.text('Casque Sans Fil'), findsOneWidget);
+      expect(find.byType(FloatingActionButton), findsOneWidget);
+    });
+
+    testWidgets('Tapping floating action button opens AddItemScreen', (WidgetTester tester) async {
+      await itemController.loadItems();
+
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: HomeScreen(
+            itemController: itemController,
+            settingsWidget: const Text('Settings View'),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Ajouter un Élément'), findsOneWidget);
+    });
   });
 }

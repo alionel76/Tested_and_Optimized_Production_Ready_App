@@ -1,39 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tested_and_optimized_production_ready_app/src/core/localization/generated/app_localizations.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/data/repositories/item_repository.dart';
+import 'package:tested_and_optimized_production_ready_app/src/features/items/domain/models/item.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/presentation/controllers/item_controller.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/items/presentation/screens/search_screen.dart';
 
+import '../test_helpers.dart';
+
 void main() {
-  testWidgets('SearchScreen filters items when typing query',
-      (WidgetTester tester) async {
-    final repository = MemoryItemRepository();
-    final controller = ItemController(repository: repository);
-    await controller.loadItems();
+  group('SearchScreen Widget Tests', () {
+    late MemoryItemRepository repository;
+    late ItemController itemController;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+    setUp(() {
+      repository = MemoryItemRepository(
+        initialItems: [
+          const Item(
+            id: '1',
+            name: 'Clavier RGB',
+            description: 'Mécanique',
+            price: 89.99,
+            category: 'Électronique',
+            imageUrl: 'https://example.com/keyboard.png',
+          ),
+          const Item(
+            id: '2',
+            name: 'Souris Gamer',
+            description: 'Optique',
+            price: 49.99,
+            category: 'Électronique',
+            imageUrl: 'https://example.com/mouse.png',
+          ),
         ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: SearchScreen(itemController: controller),
-      ),
-    );
+      );
+      itemController = ItemController(repository: repository);
+    });
 
-    await tester.pumpAndSettle();
+    testWidgets('SearchScreen filters items in real time as text is entered', (WidgetTester tester) async {
+      await itemController.loadItems();
 
-    final searchField = find.byType(TextField);
-    expect(searchField, findsOneWidget);
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: SearchScreen(
+            itemController: itemController,
+          ),
+        ),
+      );
 
-    await tester.enterText(searchField, 'Casque');
-    await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
 
-    expect(find.text('Casque Audio Sans Fil'), findsOneWidget);
-    expect(find.text('Flutter Cookbook'), findsNothing);
+      expect(find.text('Clavier RGB'), findsOneWidget);
+      expect(find.text('Souris Gamer'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'Clavier');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Clavier RGB'), findsOneWidget);
+      expect(find.text('Souris Gamer'), findsNothing);
+    });
+
+    testWidgets('SearchScreen shows no results message when search query has no match', (WidgetTester tester) async {
+      await itemController.loadItems();
+
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: SearchScreen(
+            itemController: itemController,
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), 'NonExistentItemKey');
+      await tester.pumpAndSettle();
+
+      expect(find.text('Aucun élément trouvé'), findsOneWidget);
+    });
   });
 }

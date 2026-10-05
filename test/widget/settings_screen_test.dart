@@ -1,37 +1,62 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tested_and_optimized_production_ready_app/src/core/localization/generated/app_localizations.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/settings/data/repositories/settings_repository.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/settings/presentation/controllers/settings_controller.dart';
 import 'package:tested_and_optimized_production_ready_app/src/features/settings/presentation/screens/settings_screen.dart';
 
+import '../test_helpers.dart';
+
 void main() {
-  testWidgets('SettingsScreen displays language and theme options in French',
-      (WidgetTester tester) async {
-    final repository = MemorySettingsRepository();
-    final controller = SettingsController(repository: repository);
-    await controller.loadSettings();
+  group('SettingsScreen Widget Tests', () {
+    late MemorySettingsRepository repository;
+    late SettingsController settingsController;
 
-    await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('fr'),
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: SettingsScreen(settingsController: controller),
-      ),
-    );
+    setUp(() {
+      repository = MemorySettingsRepository();
+      settingsController = SettingsController(repository: repository);
+    });
 
-    await tester.pump();
+    testWidgets('SettingsScreen displays language and theme options', (WidgetTester tester) async {
+      await settingsController.loadSettings();
 
-    expect(find.text('Langue'), findsOneWidget);
-    expect(find.text('Mode Thème'), findsOneWidget);
-    expect(find.text('Français'), findsOneWidget);
-    expect(find.text('Anglais'), findsOneWidget);
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: SettingsScreen(
+            settingsController: settingsController,
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('Langue'), findsOneWidget);
+      expect(find.text('Français'), findsOneWidget);
+      expect(find.text('Anglais'), findsOneWidget);
+      expect(find.text('Mode Thème'), findsOneWidget);
+      expect(find.text('Système'), findsOneWidget);
+      expect(find.text('Clair'), findsOneWidget);
+      expect(find.text('Sombre'), findsOneWidget);
+    });
+
+    testWidgets('Tapping English updates settingsController locale', (WidgetTester tester) async {
+      await settingsController.loadSettings();
+
+      await tester.pumpWidget(
+        createWidgetForTesting(
+          child: SettingsScreen(
+            settingsController: settingsController,
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      expect(settingsController.locale, const Locale('fr'));
+
+      await tester.tap(find.text('Anglais'));
+      await tester.pumpAndSettle();
+
+      expect(settingsController.locale, const Locale('en'));
+    });
   });
 }

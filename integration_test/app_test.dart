@@ -10,81 +10,91 @@ import 'package:tested_and_optimized_production_ready_app/src/features/settings/
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  group('End-to-End Application Integration Tests', () {
-    testWidgets('Search and toggle favorite integration flow',
-        (WidgetTester tester) async {
-      final settingsRepo = MemorySettingsRepository();
-      final settingsController = SettingsController(repository: settingsRepo);
+  group('End-To-End Application Integration Tests', () {
+    late MemorySettingsRepository settingsRepository;
+    late SettingsController settingsController;
+    late MemoryItemRepository itemRepository;
+    late ItemController itemController;
+
+    setUp(() async {
+      settingsRepository = MemorySettingsRepository();
+      settingsController = SettingsController(repository: settingsRepository);
       await settingsController.loadSettings();
 
-      final itemRepo = MemoryItemRepository();
-      final itemController = ItemController(repository: itemRepo);
+      itemRepository = MemoryItemRepository();
+      itemController = ItemController(repository: itemRepository);
       await itemController.loadItems();
-
-      await tester.pumpWidget(MyApp(
-        settingsController: settingsController,
-        itemController: itemController,
-      ));
-      await tester.pumpAndSettle();
-
-      // Tap search icon
-      final searchIcon = find.byIcon(Icons.search);
-      expect(searchIcon, findsOneWidget);
-      await tester.tap(searchIcon);
-      await tester.pumpAndSettle();
-
-      // Enter search query
-      final textField = find.byType(TextField);
-      await tester.enterText(textField, 'Gourde');
-      await tester.pumpAndSettle();
-
-      // Verify filtered item is displayed
-      expect(find.text('Gourde Isotherme 1L'), findsOneWidget);
-
-      // Tap item to open detail
-      await tester.tap(find.text('Gourde Isotherme 1L'));
-      await tester.pumpAndSettle();
-
-      // Verify detail page
-      expect(find.text('Gourde Isotherme 1L'), findsWidgets);
-      expect(find.text('Accessoires'), findsOneWidget);
     });
 
-    testWidgets('Add new item flow', (WidgetTester tester) async {
-      final settingsRepo = MemorySettingsRepository();
-      final settingsController = SettingsController(repository: settingsRepo);
-      await settingsController.loadSettings();
+    testWidgets('E2E Flow 1: Navigate to details, toggle favorite and return', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MyApp(
+          settingsController: settingsController,
+          itemController: itemController,
+        ),
+      );
 
-      final itemRepo = MemoryItemRepository();
-      final itemController = ItemController(repository: itemRepo);
-      await itemController.loadItems();
-
-      await tester.pumpWidget(MyApp(
-        settingsController: settingsController,
-        itemController: itemController,
-      ));
       await tester.pumpAndSettle();
 
-      // Tap floating action button to open add item screen
-      final fab = find.byType(FloatingActionButton);
-      await tester.tap(fab);
+      // Verify HomeScreen is displayed with items
+      expect(find.text('Catalogue & Flux'), findsOneWidget);
+      expect(find.text('Flutter Cookbook'), findsOneWidget);
+
+      // Tap on Flutter Cookbook item card
+      await tester.tap(find.text('Flutter Cookbook'));
       await tester.pumpAndSettle();
 
-      // Fill in item details
-      await tester.enterText(
-          find.byKey(const Key('item_name_field')), 'Tasse Écologique');
-      await tester.enterText(
-          find.byKey(const Key('item_price_field')), '12.50');
-      await tester.enterText(
-          find.byKey(const Key('item_description_field')), 'Fabriquée en bambou');
+      // Verify ItemDetailScreen is open
+      expect(find.text('Flutter Cookbook'), findsWidgets);
+      expect(find.text('Guide complet pour construire des applications Flutter optimisées.'), findsOneWidget);
+
+      // Toggle favorite
+      await tester.tap(find.byIcon(Icons.favorite_border));
+      await tester.pumpAndSettle();
+
+      // Go back
+      await tester.tap(find.byType(BackButton));
+      await tester.pumpAndSettle();
+
+      // Verify we are back on HomeScreen
+      expect(find.text('Catalogue & Flux'), findsOneWidget);
+    });
+
+    testWidgets('E2E Flow 2: Add a new item via AddItemScreen and verify insertion', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MyApp(
+          settingsController: settingsController,
+          itemController: itemController,
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Tap Floating Action Button
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+
+      // Fill out AddItem form
+      await tester.enterText(find.byKey(const Key('item_name_field')), 'Casque Bluetooth Pro');
+      await tester.enterText(find.byKey(const Key('item_price_field')), '129.99');
+      await tester.enterText(find.byKey(const Key('item_description_field')), 'Casque haute fidélité avec réducteur de bruit');
 
       // Submit form
-      final submitBtn = find.byKey(const Key('submit_item_button'));
-      await tester.tap(submitBtn);
+      await tester.tap(find.byKey(const Key('submit_item_button')));
       await tester.pumpAndSettle();
 
-      // Verify newly added item appears on home screen
-      expect(find.text('Tasse Écologique'), findsOneWidget);
+      // Verify back on HomeScreen and scroll down to find new item
+      expect(find.text('Catalogue & Flux'), findsOneWidget);
+
+      final newItemFinder = find.text('Casque Bluetooth Pro');
+      await tester.scrollUntilVisible(
+        newItemFinder,
+        200.0,
+        scrollable: find.byType(Scrollable).last,
+      );
+      await tester.pumpAndSettle();
+
+      expect(newItemFinder, findsOneWidget);
     });
   });
 }
